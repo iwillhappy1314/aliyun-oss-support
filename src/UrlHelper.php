@@ -209,7 +209,7 @@ class UrlHelper
 
     protected function aliImageStyle($file, $style)
     {
-        if (pathinfo($file, PATHINFO_EXTENSION) == 'gif') {
+        if (pathinfo($file, PATHINFO_EXTENSION) == 'gif' || pathinfo($file, PATHINFO_EXTENSION) == 'ico') {
             return $file;
         } elseif ($style == 'full' && !Config::$sourceImgProtect) {
             return $file;
