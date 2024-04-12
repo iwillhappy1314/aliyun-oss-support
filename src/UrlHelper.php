@@ -205,6 +205,11 @@ class UrlHelper
 
     protected function aliImageResize($file, $height, $width)
     {
+        $extension = preg_replace( '/^.*\.([^.]+)$/', '$1', $file );
+		if ( $extension === 'ico' ) {
+			return $file;
+		}
+
         return "{$file}?x-oss-process=image/resize,m_fill,h_{$height},w_{$width}";
     }
 
