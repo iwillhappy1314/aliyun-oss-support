@@ -25,11 +25,12 @@ class Config
     public static $pluginPath = "aliyun-oss";
     public static $settingsUrl = "options-general.php?page=aliyun-oss";
     public static $disableUpload = false;
-    public static $enableUrlAuth = true;
+    public static $enableUrlAuth = false;
     public static $urlAuthMethod = "A";
     public static $urlAuthPrimaryKey = "";
     public static $urlAuthAuxKey = "";
     public static $urlAuthExpTime = 1 ;
+    public static $enableUrlAuth_debug = false ;
     public static $originOptions = array(
         'bucket' => "",
         'ak' => "",
@@ -90,7 +91,6 @@ class Config
         self:: $urlAuthPrimaryKey =  $options['authPrimaryKey'];
         self:: $urlAuthAuxKey =  $options['authAuxKey'];
         self:: $urlAuthExpTime =  $options['authExpTime'] ;
-        self::initOssClient();
     }
 
     public static function monthDir($time)
@@ -111,13 +111,13 @@ class Config
             return;
         }
 
-        if (!is_admin() && empty($_FILES)) {
+        if (!is_admin() && $_FILES && !current_user_can( 'edit_posts' ) && !defined( 'REST_REQUEST' )) {
             return;
         }
 
         try {
             self::$ossClient = new OssClient(self::$accessKeyId, self::$accessKeySecret, self::$endpoint);
-        } catch (OssException $e) {
+        } catch (\Exception $e) {
             $html = "<div id='oss-warning' class='error fade'><p>%s: %s</p></div>";
             echo sprintf($html, __('Aliyun OSS', 'aliyun-oss'), $e->getMessage());
         }

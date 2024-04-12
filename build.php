@@ -1,6 +1,7 @@
 <?php
 /* =======================
-        打包 zip
+    打包 zip
+    $ php build.php {$version}
 ======================= */
 
 preg_match('/Version:\s(.+)\n/', file_get_contents('aliyun-oss.php'), $matches);
@@ -9,7 +10,7 @@ $version = $matches[1];
 $zip = new ZipArchive();
 $zip->open("aliyun-oss-{$version}.zip", ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
-$packageDirs = ['languages', 'view', 'vendor', 'src'];
+$packageDirs = ['languages', 'view', 'src', 'vendor/aliyuncs'];
 $packageFiles = [
     'aliyun-oss.php',
     'autoload.php',
