@@ -107,9 +107,9 @@ class UrlHelper
             if (!$this->is_excluded($source['url'])) {
                 $sources[$k]['url'] = str_replace($this->wpBaseUrl, $this->ossBaseUrl, $source['url']);
 
-                if (Config::$sourceImgProtect && (false === strstr($sources[$k]['url'], Config::$customSeparator))  && (false === strstr($sources[$k]['url'], '?x-oss-process'))) {
-                    $sources[$k]['url'] = $this->aliImageStyle($sources[$k]['url'], 'full');
-                }
+                if ( Config::$sourceImgProtect && ( false === strstr( $sources[ $k ][ 'url' ], Config::$customSeparator ) ) && ( false === strstr( $sources[ $k ][ 'url' ], 'x-oss-process' ) ) ) {
+					$sources[ $k ][ 'url' ] = $this->aliImageStyle( $sources[ $k ][ 'url' ], 'full' );
+				}
 
             }
             $sources[$k]['url'] = $this->sign_url($sources[$k]['url']);
