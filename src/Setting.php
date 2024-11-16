@@ -90,12 +90,12 @@ class Setting
         if ( !empty($_POST['static_host']) ) {
             $options['static_url'] = preg_replace('/(.*\/\/|)(.+?)(\/.*|)$/', '$2', $_POST['static_host']);
         } elseif ( !empty($options['bucket']) ) {
-            $options['static_url'] = join([$options['bucket'] , $options['region'], 'aliyuncs.com'], '.');
+            $options['static_url'] = join( '.', [$options['bucket'] , $options['region'], 'aliyuncs.com'] );
         }
 
         $options['img_service'] = isset($_POST['img_service']);
-        $options['img_style'] = $options['img_service'] ? isset($_POST['img_style']) : false;
-        $options['source_img_protect'] = $options['img_style'] ? isset($_POST['source_img_protect']) : false;
+        $options['img_style'] = $options[ 'img_service' ] && isset( $_POST[ 'img_style' ] );
+        $options['source_img_protect'] = $options[ 'img_style' ] && isset( $_POST[ 'source_img_protect' ] );
         if ($options['img_style'] && isset($_POST['custom_separator'])) {
             $options['custom_separator'] = $_POST['custom_separator'];
         } else {
@@ -120,8 +120,7 @@ class Setting
         }
     }
 
-    private function imageStyleProfile()
-    {
+    private function imageStyleProfile(): string {
         global $_wp_additional_image_sizes;
         $content = '';
 

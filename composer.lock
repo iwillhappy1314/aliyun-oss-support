@@ -8,24 +8,24 @@
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
-            "version": "v2.6.0",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-                "reference": "572d0f8e099e8630ae7139ed3fdedb926c7a760f"
+                "reference": "483dd0b8bff5d47f0e4ffc99f6077a295c5ccbb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/572d0f8e099e8630ae7139ed3fdedb926c7a760f",
-                "reference": "572d0f8e099e8630ae7139ed3fdedb926c7a760f",
+                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/483dd0b8bff5d47f0e4ffc99f6077a295c5ccbb5",
+                "reference": "483dd0b8bff5d47f0e4ffc99f6077a295c5ccbb5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "*",
-                "satooshi/php-coveralls": "*"
+                "php-coveralls/php-coveralls": "*",
+                "phpunit/phpunit": "*"
             },
             "type": "library",
             "autoload": {
@@ -47,9 +47,9 @@
             "homepage": "http://www.aliyun.com/product/oss/",
             "support": {
                 "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
-                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.6.0"
+                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.7.2"
             },
-            "time": "2022-08-03T08:06:01+00:00"
+            "time": "2024-10-28T10:41:12+00:00"
         }
     ],
     "packages-dev": [],
@@ -60,5 +60,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -1,5 +1,10 @@
 {
     "require": {
         "aliyuncs/oss-sdk-php": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "OSS\\WP\\": "src/"
+        }
     }
 }
