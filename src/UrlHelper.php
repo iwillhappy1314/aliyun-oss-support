@@ -4,7 +4,7 @@ namespace OSS\WP;
 
 class UrlHelper {
 	protected $wpBaseUrl = "";
-	protected string $ossBaseUrl = "";
+	protected $ossBaseUrl = "";
 
 	public function __construct() {
 		$this->wpBaseUrl  = wp_get_upload_dir()[ 'baseurl' ];
@@ -27,13 +27,13 @@ class UrlHelper {
 	 *
 	 * @param $url
 	 *
-	 * @return mixed|string $url 返回带签名的url
+	 * @return $url 返回带签名的url
 	 *
 	 * 如果设置中的url签名选项打开且鉴权类型为阿里云url鉴权A、B、C类型，则按对应鉴权类型对url添加签名信息
 	 */
 	public function sign_url( $url ) {
 		date_default_timezone_set( 'PRC' );
-		$url_host     = parse_url( $url, PHP_URL_SCHEME ) . "://" . parse_url( $url, PHP_URL_HOST );
+		$urlhost     = parse_url( $url, PHP_URL_SCHEME ) . "://" . parse_url( $url, PHP_URL_HOST );
 		$filename    = parse_url( $url, PHP_URL_PATH );
 		$expire_time = Config::$urlAuthExpTime;//set by hours
 		$key         = Config::$urlAuthPrimaryKey;
@@ -54,9 +54,9 @@ class UrlHelper {
 			$md5     = md5( $sstring );
 			if ( strstr( $url, '?' ) ) {
 				$url = explode( "?", $url );
-				$url = $url_host . "/" . $time . "/" . $md5 . $filename . "?" . $url[ 1 ];
+				$url = $urlhost . "/" . $time . "/" . $md5 . $filename . "?" . $url[ 1 ];
 			} else {
-				$url = $url_host . "/" . $time . "/" . $md5 . $filename;
+				$url = $urlhost . "/" . $time . "/" . $md5 . $filename;
 			}
 		}
 		if ( Config::$enableUrlAuth && Config::$urlAuthMethod == "C" ) {
@@ -65,9 +65,9 @@ class UrlHelper {
 			$md5     = md5( $sstring );
 			if ( strstr( $url, '?' ) ) {
 				$url = explode( '?', $url );
-				$url = $url_host . "/" . $md5 . "/" . $time . $filename . "?" . $url[ 1 ];
+				$url = $urlhost . "/" . $md5 . "/" . $time . $filename . "?" . $url[ 1 ];
 			} else {
-				$url = $url_host . "/" . $md5 . "/" . $time . $filename;
+				$url = $urlhost . "/" . $md5 . "/" . $time . $filename;
 			}
 		}
 
@@ -96,13 +96,13 @@ class UrlHelper {
 	}
 
 	/**
-	 * 将图片 srcset Url 替换为 OSS Url
+	 * 将图片 Srcsets Url 替换为 OSS Url
 	 *
 	 * @param $sources
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function replaceImgSrcsetUrl( $sources ): array {
+	public function replaceImgSrcsetUrl( $sources ) {
 		foreach ( $sources as $k => $source ) {
 			if ( ! $this->is_excluded( $source[ 'url' ] ) ) {
 				// 替换源图URL中的，wp url
@@ -173,12 +173,12 @@ class UrlHelper {
 	 * 通过 apply_filters: oss_get_image_url 手动调用
 	 * eg. $url = apply_filters('oss_get_image_url', $image_url, $style)
 	 *
-	 * @param string $url   图片的 url 或相对路径
-	 * @param string $style /array $style 图片样式或包含高宽的数组. eg. 'large' or ['width' => 50, 'height' => 50]
+	 * @param string $url 图片的 url 或相对路径
+	 * @param string/array $style 图片样式或包含高宽的数组. eg. 'large' or ['width' => 50, 'height' => 50]
 	 *
 	 * @return string
 	 */
-	public function getOssImgUrl( string $url, string $style ): string {
+	public function getOssImgUrl( $url, $style ) {
 		$url = $this->getOssUrl( $url );
 		if ( ! Config::$enableImgService ) {
 			return $url;
@@ -195,15 +195,16 @@ class UrlHelper {
 				$height = get_option( $style . '_size_h' );
 				$width  = get_option( $style . '_size_w' );
 			}
-			if ( $height ) {
+			if ( $height && $height ) {
 				$url = $this->aliImageResize( $url, $height, $width );
 			}
 		}
+		$url = $this->sign_url( $url );
 
-		return $this->sign_url( $url );
+		return $url;
 	}
 
-	protected function is_excluded( $url ): bool {
+	protected function is_excluded( $url ) {
 		return Config::$exclude && preg_match( Config::$exclude, $url );
 	}
 
@@ -228,7 +229,7 @@ class UrlHelper {
 
 
 	/**
-	 * function RestUrlEditPre 在使用REST API的编辑器加载文章时修改文章url链接，添加鉴权信息
+	 * fucntion RestUrlEditPre 在使用REST API的编辑器加载文章时修改文章url链接，添加鉴权信息
 	 * return 修改后的文章内容
 	 *
 	 * **/
@@ -244,7 +245,7 @@ class UrlHelper {
 	}
 
 	/**
-	 * function ClassicUrlEditPre 在wp classic编辑器加载文章时修改文章url链接，添加鉴权信息
+	 * fucntion ClassicUrlEditPre 在wp classic编辑器加载文章时修改文章url链接，添加鉴权信息
 	 * return 修改后的文章内容
 	 *
 	 * **/

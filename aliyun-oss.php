@@ -26,7 +26,8 @@
 */
 
 define('ALIYUN_OSS_PATH', dirname(__FILE__));
-require(ALIYUN_OSS_PATH . '/vendor/autoload.php');
+define('ALIYUN_OSS_MATEDATA_URL', 'https://chou.oss-cn-hangzhou.aliyuncs.com/aliyun-oss/plugin.json');
+require(ALIYUN_OSS_PATH . '/autoload.php');
 
 use OSS\WP\Config;
 Config::init(ALIYUN_OSS_PATH);
@@ -43,4 +44,5 @@ if (Config::$ossClient && is_admin()) {
 
 if (is_admin()) {
     new OSS\WP\Setting();
+    Puc_v4_Factory::buildUpdateChecker(ALIYUN_OSS_MATEDATA_URL, __FILE__, Config::$pluginPath);
 }
