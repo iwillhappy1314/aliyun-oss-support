@@ -103,13 +103,16 @@ class UrlHelper {
 	 * @return mixed
 	 */
 	public function replaceImgSrcsetUrl( $sources ) {
+
 		foreach ( $sources as $k => $source ) {
 			if ( ! $this->is_excluded( $source[ 'url' ] ) ) {
 				// 替换源图URL中的，wp url
 				$sources[ $k ][ 'url' ] = str_replace( $this->wpBaseUrl, $this->ossBaseUrl, $source[ 'url' ] );
 
+				$is_svg = str_contains($sources[ $k ][ 'url' ], '.svg');
+
 				// 如果开启了原图保护，且 URL 中没有添加自定义分隔符，则添加分隔符
-				if ( Config::$sourceImgProtect && ( false === strstr( $sources[ $k ][ 'url' ], Config::$customSeparator ) ) && ( false === strstr( $sources[ $k ][ 'url' ], 'x-oss-process' ) ) ) {
+				if ( !$is_svg && Config::$sourceImgProtect && ( false === strstr( $sources[ $k ][ 'url' ], Config::$customSeparator ) ) && ( false === strstr( $sources[ $k ][ 'url' ], 'x-oss-process' ) ) ) {
 					$sources[ $k ][ 'url' ] = $this->aliImageStyle( $sources[ $k ][ 'url' ], 'full' );
 				}
 
@@ -210,7 +213,7 @@ class UrlHelper {
 
 	protected function aliImageResize( $file, $height, $width ) {
 		$extension = preg_replace( '/^.*\.([^.]+)$/', '$1', $file );
-		if ( $extension === 'ico' ) {
+		if ( $extension === 'ico' || $extension === 'svg' ) {
 			return $file;
 		}
 
@@ -218,7 +221,7 @@ class UrlHelper {
 	}
 
 	protected function aliImageStyle( $file, $style ) {
-		if ( pathinfo( $file, PATHINFO_EXTENSION ) == 'gif' || pathinfo( $file, PATHINFO_EXTENSION ) == 'ico' || $style == null ) {
+		if ( pathinfo( $file, PATHINFO_EXTENSION ) == 'gif' || pathinfo( $file, PATHINFO_EXTENSION ) == 'ico' || pathinfo( $file, PATHINFO_EXTENSION ) == 'svg'  || $style == null ) {
 			return $file;
 		} elseif ( $style == 'full' ) {
 			return $file . Config::$customSeparator . $style;

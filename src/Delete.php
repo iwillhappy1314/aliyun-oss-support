@@ -44,7 +44,9 @@ class Delete
     {
         if (false === strpos($file, '@')) {
             $del_file = ltrim(str_replace(Config::$baseDir, Config::$storePath, $file), '/');
-            $this->oc->deleteObject(Config::$bucket, $del_file);
+            $result = $this->oc->deleteObject(Config::$bucket, $del_file);
+
+			error_log(print_r($result, true));
         }
 
         return $file;
