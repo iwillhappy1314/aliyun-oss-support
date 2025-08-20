@@ -32,7 +32,7 @@ class UrlHelper {
 	 * 如果设置中的url签名选项打开且鉴权类型为阿里云url鉴权A、B、C类型，则按对应鉴权类型对url添加签名信息
 	 */
 	public function sign_url( $url ) {
-		date_default_timezone_set( 'PRC' );
+		// date_default_timezone_set( 'PRC' );
 		$urlhost     = parse_url( $url, PHP_URL_SCHEME ) . "://" . parse_url( $url, PHP_URL_HOST );
 		$filename    = parse_url( $url, PHP_URL_PATH );
 		$expire_time = Config::$urlAuthExpTime;//set by hours
